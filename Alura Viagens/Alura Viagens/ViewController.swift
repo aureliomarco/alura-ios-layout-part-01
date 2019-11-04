@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController, UITableViewDataSource {
+class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     @IBOutlet weak var tabelaViagens: UITableView!
     @IBOutlet weak var viewHoteis: UIView!
@@ -19,21 +19,30 @@ class ViewController: UIViewController, UITableViewDataSource {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tabelaViagens.dataSource = self
+        self.tabelaViagens.delegate = self
         self.viewHoteis.layer.cornerRadius = 10
         self.viewPacotes.layer.cornerRadius = 10
     }
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return listaViagem.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell_travels", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell_travels", for: indexPath) as! TableViewCell
         let viagemAtual = listaViagem[indexPath.row]
         
-        cell.textLabel?.text = viagemAtual.titulo
+        cell.labelTitulo.text = viagemAtual.titulo
+        cell.labelQuantidadeDias.text = "\(viagemAtual.quantidadeDeDias) dias"
+        cell.labelPreco.text = viagemAtual.preco
+        cell.imagemViagem.image = UIImage (named: viagemAtual.caminhoDaImagem)
+        cell.imagemViagem.layer.cornerRadius = 10
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 175
     }
 }
 
